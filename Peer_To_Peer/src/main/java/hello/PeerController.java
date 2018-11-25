@@ -58,7 +58,7 @@ public class PeerController {
     	 peers=peer.getPeer_list();
     	 
     	 String ip = request.getRemoteAddr();
-    	 
+    	 System.out.println(ip);
     	 if  ( !peers.contains(ip))
     	 {	
     		peers.add(ip);
@@ -91,6 +91,7 @@ public class PeerController {
 		
     return peer.getPeer_list() ;
     	}
+    
     @RequestMapping(method=RequestMethod.GET, value="/files")    
     public <String> List list_Files() {
      

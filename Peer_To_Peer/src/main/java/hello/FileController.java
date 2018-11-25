@@ -3,6 +3,7 @@ package hello;
 import java.io.IOException;
 import java.util.stream.Collectors;
 
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -37,8 +38,13 @@ public class FileController {
     }
     
     @RequestMapping(method=RequestMethod.GET, value="/")    
-    public String listUploadedFiles(Model model) throws IOException {
-     
+    public String listUploadedFiles(Model model, HttpServletRequest request) throws IOException {
+    	
+    	//System.out.println(peer.getUrl());
+    	//System.out.println(request.getRemoteAddr());
+    	
+    
+    		
      model.addAttribute("peers", peer.getPeer_list());
      
      model.addAttribute("files", storageService.loadAll().map(
@@ -46,7 +52,8 @@ public class FileController {
                      "serveFile", path.getFileName().toString()).build().toString())
              .collect(Collectors.toList()));
    
-        return "uploadForm";
+    
+     return "uploadForm";
     }
     
  
