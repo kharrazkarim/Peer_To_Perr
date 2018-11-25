@@ -38,16 +38,18 @@ import hello.storage.StorageService;
 @RestController
 public class PeerController {
 
- 
+    public final StorageService storageService;
     public final Peer peer;
 
     @Autowired
-    private PeerController(Peer peer) {
+    private PeerController(StorageService storageService, Peer peer) {
+        this.storageService = storageService;
         this.peer=peer;
     }
     
+
     
-    @RequestMapping(method=RequestMethod.POST, value ="/peers")
+    @RequestMapping(method=RequestMethod.POST, value ="/peers" )
     @ResponseStatus(value = HttpStatus.OK)
     public void register_peer (HttpServletRequest request) {
     	
@@ -84,14 +86,23 @@ public class PeerController {
     	        
     }
 
-    @RequestMapping(method=RequestMethod.GET, value ="/peers",produces = "application/json" )
+    @RequestMapping(method=RequestMethod.GET, value ="/peers" )
 	public <String> java.util.List  peer_list() {
 		
     return peer.getPeer_list() ;
     	}
-       
-    
-    
- 
+    @RequestMapping(method=RequestMethod.GET, value="/files")    
+    public <String> List list_Files() {
+     
+     ArrayList<String> list_Files = new ArrayList<String>();
+    list_Files= (ArrayList<String>) storageService.loadAll().map(
+             path -> MvcUriComponentsBuilder.fromMethodName(FileController.class,
+                     "serveFile", path.getFileName().toString()).build().toString())
+             .collect(Collectors.toList());
 
+         
+        return list_Files;
+    }
+   
+    
 }
