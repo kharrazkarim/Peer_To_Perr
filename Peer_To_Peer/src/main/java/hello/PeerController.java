@@ -27,12 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import hello.storage.StorageFileNotFoundException;
-import hello.storage.StorageService;
+import hello.store.StorageFileNotFoundException;
+import hello.store.StorageService;
 
 
 @RestController
@@ -40,11 +41,13 @@ public class PeerController {
 
     public final StorageService storageService;
     public final Peer peer;
+	
 
     @Autowired
     private PeerController(StorageService storageService, Peer peer) {
         this.storageService = storageService;
         this.peer=peer;
+     
     }
     
 
@@ -53,17 +56,35 @@ public class PeerController {
     @ResponseStatus(value = HttpStatus.OK)
     public void register_peer (HttpServletRequest request) {
     	
-    	
-    	 java.util.List <String> peers = new ArrayList<String>();
-    	 peers=peer.getPeer_list();
     	 
-    	 String ip = request.getRemoteAddr();
-    	 System.out.println(ip);
-    	 if  ( !peers.contains(ip))
-    	 {	
-    		peers.add(ip);
-    	 	peer.setPeer_list(peers);
-    	 }
+    	 String url = request.getRemoteAddr();
+    	
+    	 if  ( !peer.getPeer_list().contains(url))
+    	 	peer.addPeer(url);
+    	 	 
+    }
+ 
+    @RequestMapping(method=RequestMethod.GET, value ="/add" )
+    @ResponseStatus(value = HttpStatus.OK)
+    public void add (HttpServletRequest request, @RequestParam String p ) {
+    	
+    	RestTemplate restTemplate = new RestTemplate();
+    	 
+        // Send request with GET method and default Headers.
+        List result = restTemplate.getForObject("http://"+p+":8887/peers", List.class);
+        
+         List<String> list = new ArrayList<String>();
+         list =peer.getInstance().getPeer_list();
+         
+         for (int i=0; i< result.size();i++)
+         {
+        	 if (! list.contains(result.get(0)))
+         list.add(result.get(i).toString());
+         
+         }
+         peer.setPeer_list(list);
+  
+        
     }
     
     
@@ -71,32 +92,28 @@ public class PeerController {
     @ResponseStatus(value = HttpStatus.OK)
     public void delete_peer (HttpServletRequest request) {
     	
-    	
-    	 java.util.List <String> peers = new ArrayList<String>();
-    	 peers=peer.getPeer_list();
     	 
-    	 String ip = request.getRemoteAddr();
+    	 String url = request.getRemoteAddr();
     	 
-    	 if (peers.contains(ip)==true ) 
-    	 {
-    		 peers.remove(ip);
-    		 peer.setPeer_list(peers);
-    		 
-    	 }
-    	        
+    	 if (peer.getPeer_list().contains(url)==true ) 
+    	 	 peer.deletePeer(url);
+  	   	        
     }
+    
+  
 
     @RequestMapping(method=RequestMethod.GET, value ="/peers" )
-	public <String> java.util.List  peer_list() {
+	public <String> List  peer_list() {
 		
     return peer.getPeer_list() ;
-    	}
+    	} 
     
     @RequestMapping(method=RequestMethod.GET, value="/files")    
-    public <String> List list_Files() {
+    public List<String> list_Files() {
      
      ArrayList<String> list_Files = new ArrayList<String>();
-    list_Files= (ArrayList<String>) storageService.loadAll().map(
+   
+     list_Files= (ArrayList<String>) storageService.loadAll().map(
              path -> MvcUriComponentsBuilder.fromMethodName(FileController.class,
                      "serveFile", path.getFileName().toString()).build().toString())
              .collect(Collectors.toList());

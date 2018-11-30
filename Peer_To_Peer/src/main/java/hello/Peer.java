@@ -26,7 +26,17 @@ public class Peer {
     public static Peer getInstance( ) {
        return peer ;
     }
-   
+    
+    public void addPeer (String url) {
+    	
+    	peer.getPeer_list().add(url);
+    	
+    }
+    
+    public void deletePeer (String url) {
+    	peer.getPeer_list().remove(url);
+    }
+    
     public String getUrl() {
 		return url;
 	}

@@ -7,8 +7,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import hello.storage.StorageProperties;
-import hello.storage.StorageService;
+import hello.*;
+import hello.store.StorageProperties;
+import hello.store.StorageService;
 
 
 @SpringBootApplication
