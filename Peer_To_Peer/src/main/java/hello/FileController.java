@@ -51,7 +51,8 @@ public class FileController {
 	return "uploadForm";
    
     }
-
+    
+   
     @RequestMapping(method= RequestMethod.GET, value="/files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
