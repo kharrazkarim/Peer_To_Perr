@@ -1,9 +1,5 @@
-/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/store/StorageService.java
 /home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/Peer.java
-/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/store/StorageException.java
-/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/store/StorageProperties.java
-/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/FileController.java
-/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/store/FileSystemStorageService.java
+/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/StorageProperties.java
 /home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/Application.java
 /home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/PeerController.java
-/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/store/StorageFileNotFoundException.java
+/home/kharraz/git/P2P/Peer_To_Peer/src/main/java/hello/File.java

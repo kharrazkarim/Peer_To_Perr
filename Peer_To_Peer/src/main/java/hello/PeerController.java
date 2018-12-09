@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,8 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
 
 @Controller
 public class PeerController {
@@ -198,7 +200,7 @@ public class PeerController {
     	
     	else
     		
-    	{	System.out.println("aaaaaaaaaaaaaa");
+    	{	
     		System.out.println(newFile.get_fileId());
     		peer.addFile(newFile);
     		response.setStatus( HttpServletResponse.SC_OK);
@@ -242,11 +244,28 @@ public class PeerController {
      model.addAttribute("files",peer.getFile_List_Names());
      
      return "welcome";
-   
+     
     }
     
   
+    @RequestMapping(method=RequestMethod.GET, value ="/add" )
+    public String add (HttpServletRequest request, @RequestParam String p ) throws JSONException {
     
+    	String url;
+    	RestTemplate restTemplate = new RestTemplate();
+    	 
+         //Send request with GET method and default Headers.
+    	JSONArray result = restTemplate.getForObject("http://"+p+"/peers", JSONArray.class);
+       
+    	for (int i=0 ; i< result.length();i++)
+    	{
+    	 url =result.getJSONObject(i).toString();
+    	peer.addPeer(url);
+    	}
+        return "redirect:/";
+    }
+    
+        
 
   
     

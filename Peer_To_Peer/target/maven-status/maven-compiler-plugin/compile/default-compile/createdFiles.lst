@@ -1,9 +1,0 @@
-hello/FileController.class
-hello/store/FileSystemStorageService.class
-hello/store/StorageException.class
-hello/store/StorageFileNotFoundException.class
-hello/Application.class
-hello/Peer.class
-hello/PeerController.class
-hello/store/StorageService.class
-hello/store/StorageProperties.class
