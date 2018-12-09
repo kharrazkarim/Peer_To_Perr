@@ -2,6 +2,7 @@ package hello;
 
 import java.util.Base64;
 
+
 public class File {
 	
 	String fileId;
@@ -9,16 +10,18 @@ public class File {
 	Float size;
 	
 	
-	public File(String name , Float size)
+	public File(String fileId ,String name , Float size)
 	{
 		this.name=name;
 		this.size=size;
-		fileId= Base64.getEncoder().encodeToString((name+size).getBytes());
+		this.fileId= fileId;
+		
+		if (fileId.equals("")) this.fileId= Base64.getEncoder().encodeToString((name+size).getBytes());
 		
 	}
 	
 	
-	//getters et setters
+	//getters and setters
 	
 	public String get_fileId() {
 		return fileId;

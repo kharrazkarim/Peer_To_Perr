@@ -1,4 +1,4 @@
-package hello.store;
+package hello;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

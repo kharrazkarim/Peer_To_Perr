@@ -1,20 +1,12 @@
 package hello;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-import hello.*;
-import hello.store.StorageProperties;
-import hello.store.StorageService;
 
 
 @SpringBootApplication
 @EnableConfigurationProperties(StorageProperties.class)
-
 
 public class Application {
 
@@ -24,14 +16,6 @@ public class Application {
          SpringApplication.run(Application.class, args);
     }
 
-    @Bean
-    CommandLineRunner init(StorageService storageService) {
-        return (args) -> {
-        	//storageService.deleteAll();
-            storageService.init();
-        };
-    }
-    
 
   
 }

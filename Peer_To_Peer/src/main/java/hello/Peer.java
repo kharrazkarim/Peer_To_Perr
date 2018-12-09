@@ -71,6 +71,18 @@ public class Peer {
 	public List <File> getFile_list() {
 		return file_list;
 	}
+	
+	public List <String>getFile_List_Names() {
+		
+		List<String> file_list_names = new ArrayList<String>() ;
+		
+		for ( File file : peer.getFile_list() ) {
+			file_list_names.add(file.get_name());
+			
+		}
+		
+		return file_list_names;
+	}
 
 	public void setFile_list(List <File> file_list) {
 		this.file_list = file_list;
@@ -120,18 +132,18 @@ public class Peer {
         
         file_list= new ArrayList<File>();
         
-        /*  File f= new File ("karim",(float) 2);
-	        File f1= new File ("karim",(float) 4);
+         File f= new File ("","karim",(float) 2);
+	        File f1= new File ("","karim",(float) 4);
 	        file_list.add(f);
 	        file_list.add(f1);
-        */
+        
         
         
         
                 
     }
 
-    
+
     
 
 
