@@ -121,7 +121,7 @@ public class Peer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	  url = socket.getLocalAddress().getHostAddress()+":8880";
+        	  url = socket.getLocalAddress().getHostAddress()+":1111";
         	} catch (SocketException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -129,17 +129,14 @@ public class Peer {
          
         peer_list = new ArrayList<String>();
         peer_list.add(url);
-      
+        File f = new File ("karim",(float) 2);
+        File f1 = new File ("karim",(float) 4);
         
+     
         file_list= new ArrayList<File>();
-        
-         File f= new File ("karim",(float) 2);
-	        File f1= new File ("karim",(float) 4);
-	        file_list.add(f);
-	        file_list.add(f1);
-        
-        
-        
+       
+        file_list.add(f1);
+        file_list.add(f);
         
                 
     }

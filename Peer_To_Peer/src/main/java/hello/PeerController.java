@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import hello.*;
 
 
 @Controller
@@ -58,13 +59,13 @@ public class PeerController {
     }
     
     
-    @RequestMapping(method=RequestMethod.GET, value ="/peers" )
+    @RequestMapping(method=RequestMethod.GET, value ="/peers")
     @ResponseBody
-	public String peer_list( HttpServletResponse response) {
+	public String peer_list( HttpServletResponse response ) {
     	
     	JSONObject jObject = new JSONObject();
     	int nb = peer.getPeer_list().size();
-    	
+    	//System.out.println("aaaaaaaaaaaaaaaaaa");
     		
     	try
     	{
@@ -81,7 +82,6 @@ public class PeerController {
     	}
     	response.setStatus( HttpServletResponse.SC_OK );
     	return jObject.toString();
-
     	} 
     
     
@@ -259,7 +259,7 @@ public class PeerController {
     }
     
   
-
+/*
     @RequestMapping(method=RequestMethod.GET, value ="/list" )
     public String list (HttpServletRequest request, @RequestParam String p ) throws JSONException {
     
@@ -273,6 +273,7 @@ public class PeerController {
         return "redirect:/";
     }
     
+  */
     
     @RequestMapping(method=RequestMethod.GET, value ="/add" )
     public String add (HttpServletRequest request, @RequestParam String p ) throws JSONException {
@@ -283,6 +284,8 @@ public class PeerController {
          //Send request with GET method and default Headers.
     	JSONArray result = restTemplate.getForObject("http://"+p+"/peers", JSONArray.class);
        
+    	
+    	System.out.println(result.toString());
     	
     	for (int i=0 ; i< result.length();i++)
     	{
