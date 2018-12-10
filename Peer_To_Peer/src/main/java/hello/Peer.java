@@ -77,6 +77,7 @@ public class Peer {
 		List<String> file_list_names = new ArrayList<String>() ;
 		
 		for ( File file : peer.getFile_list() ) {
+			
 			file_list_names.add(file.get_name());
 			
 		}
@@ -132,8 +133,8 @@ public class Peer {
         
         file_list= new ArrayList<File>();
         
-         File f= new File ("","karim",(float) 2);
-	        File f1= new File ("","karim",(float) 4);
+         File f= new File ("karim",(float) 2);
+	        File f1= new File ("karim",(float) 4);
 	        file_list.add(f);
 	        file_list.add(f1);
         

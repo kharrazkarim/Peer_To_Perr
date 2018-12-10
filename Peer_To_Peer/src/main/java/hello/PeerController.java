@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,14 @@ import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileSystemUtils;
@@ -28,6 +37,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
@@ -186,13 +197,13 @@ public class PeerController {
     }
     
     @RequestMapping(method=RequestMethod.POST, value="/files")    
-    public void File_Meta(@RequestBody File newFile , HttpServletResponse response) {
+    public void File_Meta(@RequestBody Map<String, String> newFile , HttpServletResponse response) throws NumberFormatException, JSONException {
     	
     	boolean rep = false;
     	
     	for (File file : peer.getFile_list())
   	    {
-     		 if (file.get_fileId().equals(newFile.get_fileId()))	 rep = true;	
+     		 if (file.get_fileId().equals(newFile.get("fileId").toString()))	 rep = true;	
      			
   	    	}
     	
@@ -201,8 +212,8 @@ public class PeerController {
     	else
     		
     	{	
-    		System.out.println(newFile.get_fileId());
-    		peer.addFile(newFile);
+    		File f = new File (newFile.get("name").toString(),Float.valueOf(newFile.get("size").toString()));
+    		peer.addFile(f);
     		response.setStatus( HttpServletResponse.SC_OK);
     	}
 		
@@ -248,6 +259,21 @@ public class PeerController {
     }
     
   
+
+    @RequestMapping(method=RequestMethod.GET, value ="/list" )
+    public String list (HttpServletRequest request, @RequestParam String p ) throws JSONException {
+    
+    	String url;
+    	RestTemplate restTemplate = new RestTemplate();
+    	 
+         //Send request with GET method and default Headers.
+    	JSONArray result = restTemplate.getForObject("http://"+p+"/files", JSONArray.class);
+       
+    	
+        return "redirect:/";
+    }
+    
+    
     @RequestMapping(method=RequestMethod.GET, value ="/add" )
     public String add (HttpServletRequest request, @RequestParam String p ) throws JSONException {
     
@@ -257,11 +283,37 @@ public class PeerController {
          //Send request with GET method and default Headers.
     	JSONArray result = restTemplate.getForObject("http://"+p+"/peers", JSONArray.class);
        
+    	
     	for (int i=0 ; i< result.length();i++)
     	{
     	 url =result.getJSONObject(i).toString();
     	peer.addPeer(url);
     	}
+        return "redirect:/";
+    }
+    
+    @RequestMapping(method= RequestMethod.POST, value="/upload" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) throws Exception {
+    	
+    	File newfile = new File(file.getOriginalFilename(),(float) file.getSize());
+    	peer.addFile(newfile);
+    	
+    	
+      
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, this.rootLocation.resolve(newfile.get_fileId()),
+                    StandardCopyOption.REPLACE_EXISTING);
+            }
+        
+        catch (IOException e) {
+            throw new Exception("Failed to store file ");
+}
+       
+        
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
         return "redirect:/";
     }
     

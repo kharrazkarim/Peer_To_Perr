@@ -6,7 +6,7 @@
 	</div>
 
 	<div>
-		<form method="POST" enctype="multipart/form-data" action="/">
+		<form method="POST" enctype="multipart/form-data" action="/upload">
 			<table>
 				<tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
 				<tr><td></td><td><input type="submit" value="Upload" /></td></tr>
@@ -19,6 +19,20 @@
 		<ul>
 			<li th:each="peer : ${peers}">
 				<a th:href="${peer}" th:text="${peer}" />
+			</li>
+		</ul>
+	</div>
+	
+	<form method="GET" enctype="multipart/form-data" action="/list">
+			<table>
+				<tr><td>Peer Id:</td><td><input type="text" name ="p" /></td>
+				<td></td><td><input type="submit" value="get_files" /></td></tr>
+			</table>
+		</form>
+	<h2>List of file</h2>
+		<ul>
+			<li th:each="file : ${files}">
+				<a th:href="${file}" th:text="${file}" />
 			</li>
 		</ul>
 	</div>

@@ -10,13 +10,13 @@ public class File {
 	Float size;
 	
 	
-	public File(String fileId ,String name , Float size)
+	public File(String name , Float size)
 	{
 		this.name=name;
 		this.size=size;
-		this.fileId= fileId;
+		this.fileId= Base64.getEncoder().encodeToString((name+size).getBytes());;
 		
-		if (fileId.equals("")) this.fileId= Base64.getEncoder().encodeToString((name+size).getBytes());
+		//if (fileId.equals("")) this.fileId= Base64.getEncoder().encodeToString((name+size).getBytes());
 		
 	}
 	
